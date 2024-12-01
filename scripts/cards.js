@@ -1,26 +1,26 @@
 const initialCards = [
     {
-      name: "Нью-Йорк",
-      link: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Диксон",
+      link: "https://sun9-23.userapi.com/impg/g5g9QA_WwoYHt8FCLe2Wi8oMCbWDFxohvL1MJA/t_LxFQrk0xk.jpg?size=1620x1080&quality=96&sign=a16707cbb19b2405b616a18da89a80a2&type=album",
     },
     {
-      name: "Торонто",
-      link: "https://images.unsplash.com/photo-1516900557549-41557d405adf?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Москва",
+      link: "https://img.goodfon.ru/original/2560x1440/2/30/moskva-nochnoy-gorod-rossiya.jpg",
     },
     {
-      name: "Дубай",
-      link: "https://images.unsplash.com/photo-1504556106489-6d450910aeb3?q=80&w=2690&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Ростов",
+      link: "https://img-fotki.yandex.ru/get/6835/213948141.3f/0_15e41f_e2903cac_XL.jpg",
     },
     {
-      name: "Токио",
-      link: "https://images.unsplash.com/photo-1494587416117-f102a2ac0a8d?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Омск",
+      link: "https://c.pxhere.com/photos/7b/c6/omsk_winter_road_cold_siberia_western_siberia_russia_frosty_city-1165734.jpg!d",
     },
     {
-      name: "Маями",
-      link: "https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Санкт-Петербург",
+      link: "https://cs9.pikabu.ru/post_img/big/2017/02/05/10/1486310611153649618.jpg",
     },
     {
-      name: "Шанхай",
-      link: "https://images.unsplash.com/photo-1558357976-837e751642a8?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Тверь",
+      link: "https://газета-вся-тверь.рф/upload/medialibrary/c1b/ptd3o8e6b3nb338jjr6vn38veuv22cr8.jpg",
     }
 ];
