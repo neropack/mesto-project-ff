@@ -17,7 +17,7 @@ function createCard(cardData, deleteCard) {
     cardElement.querySelector('.card__title').textContent = cardData.name;
 
     // удаление элемента при нажатии
-    deleteButton.addEventListener('click', (cardElement) => deleteCard(cardElement));
+    deleteButton.addEventListener('click', (evt) => deleteCard(evt));
     return cardElement;
 }
 // @todo: Функция удаления карточки
