@@ -3,31 +3,50 @@ const cardTemplate = document.querySelector('#card-template').content;
 // @todo: DOM узлы
 const cardsList = document.querySelector('.places__list');
 const addButton = document.querySelector('.profile__add-button');
+// todo объект с селекторами
 
 // @todo: Функция создания карточки
-function createCard(cardData, deleteCard) {
+function Card(cardData, cbDeleteCard, cbShowImage) {
     // переменные: клонирование шаблона и получение кнопки удаления
-    const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-    const deleteButton = cardElement.querySelector('.card__delete-button');
-    const cardImage = cardElement.querySelector('.card__image');
+    this.cardElement = cardTemplate.querySelector('.card').cloneNode(true);
+    this.deleteButton = this.cardElement.querySelector('.card__delete-button');
+    this.cardImage = this.cardElement.querySelector('.card__image');
+    this.create = () => this.cardElement;
+    this.delete = () => {
+        this.cardElement.remove();
+        cbDeleteCard(cardData);
+    }
+    this.show = () => {
+        cbShowImage(this.cardImage);
+    }
+    // console.log(this);
+    // // передача значений в шаблон из cards.js
+    this.cardImage.src = cardData.link;
+    this.cardImage.alt = cardData.name;
+    this.cardElement.querySelector('.card__title').textContent = cardData.name;
 
-    // передача значений в шаблон из cards.js
-    cardImage.src = cardData.link;
-    cardImage.alt = cardData.name;
-    cardElement.querySelector('.card__title').textContent = cardData.name;
-
-    // удаление элемента при нажатии
-    deleteButton.addEventListener('click', (evt) => deleteCard(evt));
-    return cardElement;
+    // // удаление элемента при нажатии
+    // должен быть один eventlistener
+    this.cardImage.addEventListener('click', this.show);
+    this.deleteButton.addEventListener('click', this.delete);
+    // @todo сделать Like
+    return {
+        create: this.create,
+    };
 }
 // @todo: Функция удаления карточки
-function deleteCard(event) {
-    event.currentTarget.parentNode.remove();
+function deleteCard(cardData) {
+    console.log(`карточка ${cardData.name} удалена`)
+}
+
+function showImage(image) {
+    console.log(image);
 }
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((el) => {
     //добавление заполненного шаблона в список
-    const card = createCard(el, deleteCard);
-    cardsList.append(card);
+    const card = new Card(el, deleteCard, showImage);
+    console.log(card);
+    cardsList.append(card.create());
 });
