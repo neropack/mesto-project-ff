@@ -10,6 +10,8 @@ import likeActiveIcon from '../images/like-active.svg';
 import likeInactiveIcon from '../images/like-inactive.svg';
 import logoImage from '../images/logo.svg';
 
+import '../pages/index.css';
+
 const arrImages = [
     { name: 'Add Icon', link: addIcon },
     { name: 'Avatar Image', link: avatarImage },
