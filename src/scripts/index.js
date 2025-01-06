@@ -50,3 +50,5 @@ initialCards.forEach((el) => {
     console.log(card);
     cardsList.append(card.create());
 });
+
+console.log('kekus');
