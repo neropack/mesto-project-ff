@@ -1,32 +1,7 @@
-import addIcon from '../images/add-icon.svg';
-import avatarImage from '../images/avatar.jpg';
-import cardOne from '../images/card_1.jpg';
-import cardTwo from '../images/card_2.jpg';
-import cardThree from '../images/card_3.jpg';
-import closeIcon from '../images/close.svg';
-import deleteIcon from '../images/delete-icon.svg';
-import editIcon from '../images/edit-icon.svg';
-import likeActiveIcon from '../images/like-active.svg';
-import likeInactiveIcon from '../images/like-inactive.svg';
-import logoImage from '../images/logo.svg';
-
 import '../pages/index.css';
 
 import { initialCards } from './cards.js';
 
-const arrImages = [
-    { name: 'Add Icon', link: addIcon },
-    { name: 'Avatar Image', link: avatarImage },
-    { name: 'Card One', link: cardOne },
-    { name: 'Card Two', link: cardTwo },
-    { name: 'Card Three', link: cardThree },
-    { name: 'Close Icon', link: closeIcon },
-    { name: 'Delete Icon', link: deleteIcon },
-    { name: 'Edit Icon', link: editIcon },
-    { name: 'Like Active Icon', link: likeActiveIcon },
-    { name: 'Like Inactive Icon', link: likeInactiveIcon },
-    { name: 'Logo', link: logoImage },
-]
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
 // @todo: DOM узлы
