@@ -12,6 +12,8 @@ import logoImage from '../images/logo.svg';
 
 import '../pages/index.css';
 
+import { initialCards } from './cards.js';
+
 const arrImages = [
     { name: 'Add Icon', link: addIcon },
     { name: 'Avatar Image', link: avatarImage },
@@ -74,8 +76,5 @@ function showImage(image) {
 initialCards.forEach((el) => {
     //добавление заполненного шаблона в список
     const card = new Card(el, deleteCard, showImage);
-    console.log(card);
     cardsList.append(card.create());
 });
-
-console.log('kekus');
