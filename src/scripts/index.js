@@ -1,11 +1,15 @@
 import '../pages/index.css';
 
 import { initialCards } from './cards.js';
+import { Popup } from '../components/Popup/popup.js';
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
 // @todo: DOM узлы
 const cardsList = document.querySelector('.places__list');
+const editButton = document.querySelector('.profile__edit-button');
+const editPopupEl = document.querySelector('.popup_type_edit');
+const addPopupEl = document.querySelector('.popup_type_new-card')
 const addButton = document.querySelector('.profile__add-button');
 // todo объект с селекторами
 
@@ -53,3 +57,14 @@ initialCards.forEach((el) => {
     const card = new Card(el, deleteCard, showImage);
     cardsList.append(card.create());
 });
+
+editButton.addEventListener('click', () => {
+    editPopup.open();
+});
+
+addButton.addEventListener('click', () => {
+    addPopup.open();
+});
+
+const editPopup = new Popup(editPopupEl);
+const addPopup = new Popup(addPopupEl);
