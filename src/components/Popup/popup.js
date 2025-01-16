@@ -1,8 +1,10 @@
+import { selectors } from "../../utils/selectors";
+import { data } from "../../utils/constants";
+
 export function Popup(popup) {
-    this.closeButton = popup.querySelector('.popup__close');
+    this.closeButton = popup.querySelector(selectors.buttons.close);
 
     this.handleEscClose = (e) => {
-        console.log(e.key);
         e.key === 'Escape' && this.close();
     }
     this.handleOverlayClose = (e) => {
@@ -11,18 +13,19 @@ export function Popup(popup) {
 
     this.open = () => {
         popup.classList.add('popup_is-opened');
-        this.closeButton.addEventListener('click', this.close);
         popup.addEventListener('click', this.handleOverlayClose);
         document.addEventListener('keydown', this.handleEscClose);
     };
     this.close = () => {
         popup.classList.remove('popup_is-opened');
-        this.closeButton.removeEventListener('click', this.close);
         popup.removeEventListener('click', this.handleOverlayClose);
         document.removeEventListener('keydown', this.handleEscClose);
     };
 
+    this.closeButton.addEventListener('click', this.close);
+
     return {
         open: this.open,
+        close: this.close,
     };
 }
