@@ -1,65 +1,83 @@
 import './index.css';
-import { Card } from './components/Card/card.js';
-import { data } from './utils/constants.js';
-import { PopupWithForm } from './components/Popup/popup-with-form.js';
-import { PopupWithImage } from './components/Popup/popup-with-image.js';
 import initialCards from './data/cards';
+import { data } from './utils/constants.js';
+import { createCard } from './components/card.js';
+import { openModal, closeModal } from './components/modal.js';
 
-const editPopup = new PopupWithForm(data.popups.edit, 'edit-profile', (userData) => {
-    data.userInfo.name.textContent = userData.name;
-    data.userInfo.description.textContent = userData.description;
+// @todo: DOM узлы
+const cardsList = data.cardList.list;
+const closeButtons = data.buttons.closePopup;
+const forms = document.forms;
+const editForm = forms['edit-profile'];
+const addForm = forms['new-place'];
+
+// -------------------------------- Колбэки --------------------------------
+// @todo: Функция удаления карточки
+function deleteCard(event) {
+    event.currentTarget.parentNode.remove();
+}
+
+// функция лайка карточки
+function likeCard(event) {
+    event.currentTarget.classList.toggle('card__like-button_is-active');
+}
+
+// функция показа картинки в попапе
+function showImage(image) {
+    data.imagePopup.image.src = image['link'];
+    data.imagePopup.caption.textContent = image['place-name'];
+    openModal(data.popups.image)
+}
+
+editForm.name.value = data.userInfo.name.textContent;
+editForm.description.value = data.userInfo.description.textContent;
+
+editForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    data.userInfo.name.textContent = editForm.name.value;
+    data.userInfo.description.textContent = editForm.description.value;
+    closeModal(editForm.parentNode.parentNode);
 });
 
-const addPopup = new PopupWithForm(data.popups.add, 'new-place', (cardData) => {
-    const card = new Card(data.cardTemplate.templateContent, deleteCard, showImage, likeCard);
-    card.create({
-        "name": cardData['place-name'],
-        "link": cardData['link'],
-        "caption": cardData['place-name'],
-    });
-    card.render(data.cardList.list, 'prepend');
+addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const card = createCard({
+        'place-name': addForm['place-name'].value,
+        'link': addForm['link'].value,
+    }, deleteCard, likeCard, showImage);
+    addCard(card, 'prepend');
+    addForm.reset();
+    closeModal(addForm.parentNode.parentNode);
 });
 
-// ------------------------------ Слушатели кнопок ------------------------------
-data.buttons.editProfile.addEventListener('click', () => {
-    editPopup.setValues({
-        "name": data.userInfo.name.textContent,
-        "description": data.userInfo.description.textContent,
-    });
-    editPopup.open();
-});
-
+// -------------------------------- Слушатели --------------------------------
 data.buttons.addCard.addEventListener('click', () => {
-    addPopup.open();
+    openModal(data.popups.add);
 });
-// ------------------------------------------------------------------------------
 
-// -------------------------------- Колбэки Card --------------------------------
-function deleteCard(cardData) {
-    console.log(`карточка ${cardData['place-name']} удалена`);
-}
+data.buttons.editProfile.addEventListener('click', () => {
+    openModal(data.popups.edit);
+});
 
-function likeCard(button) {
-    button.classList.toggle('card__like-button_is-active');
-}
-
-function showImage(cardData) {
-    const imagePopup = new PopupWithImage(data.popups.image, {
-        "name": cardData['name'],
-        "link": cardData['link'],
+closeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        closeModal(button.closest('.popup'));
     });
-    imagePopup.open();
-}
-// ------------------------------------------------------------------------------
+});
+
+// -------------------------------- Вывод карточек на страницу --------------------------------
 
 // @todo: Вывести карточки на страницу
-initialCards.forEach((cardData) => {
-    //добавление заполненного шаблона в список
-    const card = new Card(data.cardTemplate.templateContent, deleteCard, showImage, likeCard);
-    card.create({
-        "name": cardData['place-name'],
-        "link": cardData['link'],
-        "caption": cardData['place-name'],
+function renderCards(data, method) {
+    data.forEach((cardData) => {
+        //добавление заполненного шаблона в список
+        const card = createCard(cardData, deleteCard, likeCard, showImage);
+        addCard(card, method)
     });
-    card.render(data.cardList.list, 'append');
-});
+}
+
+function addCard(data, method) {
+    cardsList[method](data);
+}
+
+renderCards(initialCards, 'append');
