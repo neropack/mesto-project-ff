@@ -29,14 +29,11 @@ function showImage(image) {
     openModal(data.popups.image)
 }
 
-editForm.name.value = data.userInfo.name.textContent;
-editForm.description.value = data.userInfo.description.textContent;
-
 editForm.addEventListener('submit', (e) => {
     e.preventDefault();
     data.userInfo.name.textContent = editForm.name.value;
     data.userInfo.description.textContent = editForm.description.value;
-    closeModal(editForm.parentNode.parentNode);
+    closeModal(data.popups.edit);
 });
 
 addForm.addEventListener('submit', (e) => {
@@ -47,7 +44,7 @@ addForm.addEventListener('submit', (e) => {
     }, deleteCard, likeCard, showImage);
     addCard(card, 'prepend');
     addForm.reset();
-    closeModal(addForm.parentNode.parentNode);
+    closeModal(data.popups.add);
 });
 
 // -------------------------------- Слушатели --------------------------------
@@ -56,6 +53,8 @@ data.buttons.addCard.addEventListener('click', () => {
 });
 
 data.buttons.editProfile.addEventListener('click', () => {
+    editForm.name.value = data.userInfo.name.textContent;
+    editForm.description.value = data.userInfo.description.textContent;
     openModal(data.popups.edit);
 });
 

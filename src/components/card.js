@@ -1,7 +1,7 @@
 import { data } from "../utils/constants";
 import { selectors } from "../utils/selectors";
 // @todo: Функция создания карточки
-export function createCard(cardData, deleteCard, likeCard, popupImage) {
+export function createCard(cardData, deleteCard, likeCard, openPopupImage) {
     // переменные: клонирование шаблона и получение кнопки удаления
     const cardTemplate = data.cardTemplate.templateContent;
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
@@ -19,7 +19,7 @@ export function createCard(cardData, deleteCard, likeCard, popupImage) {
     // лайк карточка
     likeButton.addEventListener('click', (likeButton) => likeCard(likeButton));
     // открытие попапа
-    cardImage.addEventListener('click', () => popupImage(cardData));
+    cardImage.addEventListener('click', () => openPopupImage(cardData));
 
     return cardElement;
 }
