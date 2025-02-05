@@ -1,0 +1,9 @@
+.input-error {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: normal;
+    color: #f00;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
