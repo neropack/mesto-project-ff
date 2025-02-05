@@ -10,6 +10,8 @@ export const data = {
     userInfo: {
         name: document.querySelector(selectors.profile.name),
         description: document.querySelector(selectors.profile.description),
+        avatar: document.querySelector(selectors.profile.avatar),
+        editAvatar: document.querySelector(selectors.profile.edit),
     },
     cardList: {
         list: document.querySelector(selectors.cardList.list),
@@ -18,6 +20,7 @@ export const data = {
         edit: document.querySelector(selectors.popups.edit),
         add: document.querySelector(selectors.popups.add),
         image: document.querySelector(selectors.popups.image),
+        avatar: document.querySelector(selectors.popups.avatar),
     },
     imagePopup: {
         image: document.querySelector(selectors.popupImage.image),
@@ -27,7 +30,6 @@ export const data = {
         templateContent: document.querySelector(selectors.cardTemplate.template).content,
         card: document.querySelector(selectors.cardTemplate.card),
     },
-    
 }
 
-
+export const baseURL = 'https://nomoreparties.co/v1/wff-cohort-31';
