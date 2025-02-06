@@ -14,11 +14,7 @@ const handlePromise = (response) => {
     return Promise.reject(`Ошибка: ${response.status}`);
 };
 
-const handleError = (err) => {
-    console.log(err);
-};
-
-const request = (endpoint, options) => fetch(`${baseURL}${endpoint}`, options).then(handlePromise).catch(handleError);
+const request = (endpoint, options) => fetch(`${baseURL}${endpoint}`, options).then(handlePromise);
 
 const getInitialCards = () =>
     request('/cards', {
