@@ -28,54 +28,39 @@ let userData = {};
 // -------------------------------- Колбэки --------------------------------
 // @todo: Функция удаления карточки
 function deleteCard(event, cardId) {
-    event.currentTarget.parentNode.remove();
-    api.deleteCard(cardId);
+    api.deleteCard(cardId).then(event.currentTarget.closest('.card').remove());
 }
 
 // функция лайка карточки
 function likeCard({ cardId, button, counter }) {
-
-    if (button.classList.contains('card__like-button_is-active')) {
-        api.unlikeCard(cardId)
-            .then(({ likes }) => {
-                button.classList.remove('card__like-button_is-active');
-                if (likes.length) {
-                    counter.classList.add('card__like-counter_is-active');
-                    counter.textContent = likes.length;
-                } else {
-                    counter.classList.remove('card__like-counter_is-active');
-                    counter.textContent = likes.length;
-                }
-            })
-            .catch((err) => console.error(err));
-    } else {
-        api.likeCard(cardId)
-            .then(({ likes }) => {
-                button.classList.add('card__like-button_is-active');
-
-                counter.classList.add('card__like-counter_is-active');
-                counter.textContent = likes.length;
-            })
-            .catch((err) => console.error(err));
-    }
+    const likeMethod = button.classList.contains('card__like-button_is-active')
+        ? api.unlikeCard
+        : api.likeCard;
+    likeMethod(cardId)
+        .then(({ likes }) => {
+            button.classList.toggle('card__like-button_is-active');
+            counter.textContent = likes.length;
+        })
+        .catch((err) => console.error(err));
 }
 
 // функция показа картинки в попапе
 function showImage(image) {
     data.imagePopup.image.src = image['link'];
-    data.imagePopup.caption.textContent = image['place-name'];
+    data.imagePopup.caption.textContent = image['name'];
+    data.imagePopup.image.alt = image['name'];
     openModal(data.popups.image);
 }
 
 function setProfile(user) {
-    userData = {...user};
+    userData = { ...user };
     data.userInfo.name.textContent = user.name;
     data.userInfo.description.textContent = user.about;
     data.userInfo.avatar.style.backgroundImage = `url('${user.avatar}')`;
 }
 
 function renderSaving(isSaving, button) {
-    isSaving ? button.textContent = 'Сохранение...' : button.textContent = 'Сохранить';
+    isSaving ? (button.textContent = 'Сохранение...') : (button.textContent = 'Сохранить');
 }
 
 // -------------------------------- Слушатели --------------------------------
@@ -94,7 +79,7 @@ data.buttons.editProfile.addEventListener('click', () => {
 data.userInfo.editAvatar.addEventListener('click', (e) => {
     clearValidation(data.popups.avatar, validationConfig);
     openModal(data.popups.avatar);
-})
+});
 
 closeButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -104,13 +89,20 @@ closeButtons.forEach((button) => {
 
 editForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const saveButton = editForm.querySelector(selectors.buttons.save);
-    data.userInfo.name.textContent = editForm.name.value;
-    data.userInfo.description.textContent = editForm.description.value;
+    
     renderSaving(true, saveButton);
-    api.editProfile(editForm.name.value, editForm.description.value).finally(() => renderSaving(false, saveButton));
-    closeModal(data.popups.edit);
+    api.editProfile(editForm.name.value, editForm.description.value)
+        .then(() => {
+            data.userInfo.name.textContent = editForm.name.value;
+            data.userInfo.description.textContent = editForm.description.value;
+            closeModal(data.popups.edit);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+            renderSaving(false, saveButton)
+        });
+    
 });
 
 editAvatarForm.addEventListener('submit', (e) => {
@@ -123,19 +115,23 @@ editAvatarForm.addEventListener('submit', (e) => {
             return contentType.startsWith('image/');
         })
         .then((result) => {
-            result 
-            ? api.updateAvatar(editAvatarForm.link.value)
-                .then((res) => {
-                    data.userInfo.avatar.style.backgroundImage = `url('${res.avatar}')`;
-                })
-                .finally(() => renderSaving(false, saveButton))
-            : Promise.reject(`Не картинка`);
+            renderSaving(true, saveButton);
+            result
+                ? api
+                      .updateAvatar(editAvatarForm.link.value)
+                      .then((res) => {
+                          data.userInfo.avatar.style.backgroundImage = `url('${res.avatar}')`;
+                      })
+                      .finally(() => renderSaving(false, saveButton))
+                : Promise.reject(`Не картинка`);
         })
-        .catch((err) => console.log(err));
-    renderSaving(true, saveButton);
-    
-    closeModal(data.popups.avatar);
-})
+        .then(() => {
+            closeModal(data.popups.avatar);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+});
 
 addForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -144,12 +140,13 @@ addForm.addEventListener('submit', (e) => {
     const saveButton = addForm.querySelector(selectors.buttons.save);
 
     renderSaving(true, saveButton);
-    api.addCard(cardName, cardLink).then((cardData) => {
-        const card = createCard(cardData, deleteCard, likeCard, showImage, userData._id);
-        addCard(card, 'prepend');
-        addForm.reset();
-        closeModal(data.popups.add);
-    })
+    api.addCard(cardName, cardLink)
+        .then((cardData) => {
+            const card = createCard(cardData, deleteCard, likeCard, showImage, userData._id);
+            addCard(card, 'prepend');
+            addForm.reset();
+            closeModal(data.popups.add);
+        })
         .finally(() => renderSaving(false, saveButton));
 });
 
@@ -171,7 +168,7 @@ function addCard(data, method) {
 enableValidation(validationConfig);
 
 Promise.all([api.getProfile(), api.getInitialCards()])
-    .then(([user, cards]) => {  
+    .then(([user, cards]) => {
         setProfile(user);
         renderCards(cards, 'append');
     })
