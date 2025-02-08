@@ -74,8 +74,6 @@ const updateAvatar = (link) =>
         }),
     });
 
-const checkImage = (link) => fetch(link, { method: 'HEAD' });
-
 export {
     getInitialCards,
     getProfile,
@@ -85,5 +83,4 @@ export {
     likeCard,
     unlikeCard,
     updateAvatar,
-    checkImage,
 };
