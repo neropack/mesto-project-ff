@@ -28,7 +28,11 @@ let userData = {};
 // -------------------------------- Колбэки --------------------------------
 // @todo: Функция удаления карточки
 function deleteCard(event, cardId) {
-    api.deleteCard(cardId).then(event.currentTarget.closest('.card').remove());
+    api.deleteCard(cardId)
+        .then(event.currentTarget.closest('.card').remove())
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 // функция лайка карточки
@@ -41,7 +45,9 @@ function likeCard({ cardId, button, counter }) {
             button.classList.toggle('card__like-button_is-active');
             counter.textContent = likes.length;
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 // функция показа картинки в попапе
@@ -98,7 +104,9 @@ editForm.addEventListener('submit', (e) => {
             data.userInfo.description.textContent = editForm.description.value;
             closeModal(data.popups.edit);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+            console.log(err);
+        })
         .finally(() => {
             renderSaving(false, saveButton)
         });
@@ -109,28 +117,18 @@ editAvatarForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const saveButton = editAvatarForm.querySelector(selectors.buttons.save);
 
-    api.checkImage(editAvatarForm.link.value)
+    renderSaving(true, saveButton);
+    api.updateAvatar(editAvatarForm.link.value)
         .then((res) => {
-            const contentType = res.headers.get('Content-Type');
-            return contentType.startsWith('image/');
+            data.userInfo.avatar.style.backgroundImage = `url('${res.avatar}')`;
         })
-        .then((result) => {
-            renderSaving(true, saveButton);
-            result
-                ? api
-                      .updateAvatar(editAvatarForm.link.value)
-                      .then((res) => {
-                          data.userInfo.avatar.style.backgroundImage = `url('${res.avatar}')`;
-                      })
-                      .finally(() => renderSaving(false, saveButton))
-                : Promise.reject(`Не картинка`);
-        })
-        .then(() => {
+        .then((() => {
             closeModal(data.popups.avatar);
-        })
+        }))
         .catch((err) => {
             console.log(err);
         })
+        .finally(() => renderSaving(false, saveButton))
 });
 
 addForm.addEventListener('submit', (e) => {
@@ -146,6 +144,9 @@ addForm.addEventListener('submit', (e) => {
             addCard(card, 'prepend');
             addForm.reset();
             closeModal(data.popups.add);
+        })
+        .catch((err) => {
+            console.log(err);
         })
         .finally(() => renderSaving(false, saveButton));
 });
